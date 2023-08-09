@@ -38,3 +38,23 @@ const init = () => {
 
 // Calls the initialization function and starts the script
 init();
+
+// integrate this new code properly: ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+// With a structureOutParser we can define a schema for the output.
+const { StructuredOutputParser } = require("langchain/output_parsers");
+const parser = StructuredOutputParser.fromNamesAndDescriptions({
+    code: "Javascript code that answers the user's question",
+    explanation: "detailed explanation of the example code provided",
+});   
+
+const formatInstructions = parser.getFormatInstructions();   
+
+const prompt = new PromptTemplate({
+  template: "You are a javascript expert and will answer the user’s coding questions thoroughly as possible.\n{format_instructions}\n{question}",
+  inputVariables: ["question"],
+  partialVariables: { format_instructions: formatInstructions }
+});   
+
+console.log(await parser.parse(res));  
